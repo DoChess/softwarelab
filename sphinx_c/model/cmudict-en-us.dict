@@ -2,16 +2,6 @@ chess CH EH1 S
 
 move M UW V
 
-rook R UH K
-king K IH NG
-queen K W IY N
-pawn P AO N
-knight N AY T
-bishop B IH SH AH P
-
-to T UW
-from F R AH M
-
 alpha AE L F AH
 bravo B R AA V OW
 crown K R AW N
