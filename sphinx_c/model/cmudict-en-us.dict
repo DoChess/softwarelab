@@ -1,10 +1,10 @@
 chess CH EH1 S
-
+block B L AA1 K
 move M UW V
+tango T AE1 NG G OW0
 
 alpha AE L F AH
 bravo B R AA V OW
-crown K R AW N
 charlie CH AA R L IY
 charlie(2) CH AA R L IH
 delta D EH L T AH
