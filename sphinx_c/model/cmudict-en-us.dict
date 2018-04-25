@@ -1,12 +1,11 @@
-chess CH EH1 S
-block B L AA1 K
+chess CH EH S
+block B L AA K
 move M UW V
-tango T AE1 NG G OW0
+tango T AE NG G OW
 
 alpha AE L F AH
 bravo B R AA V OW
 charlie CH AA R L IY
-charlie(2) CH AA R L IH
 delta D EH L T AH
 echo EH K OW
 foxtrot F AA K S T R AA T
@@ -18,7 +17,6 @@ two T UW
 three TH R IY
 four F AO R
 five F AY V
-five F AY
 six S IH K S
 seven S EH V AH N
 eight EY T
