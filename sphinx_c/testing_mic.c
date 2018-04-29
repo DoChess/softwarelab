@@ -213,6 +213,13 @@ static void recognize_from_microphone()
 int main(int argc, char *argv[])
 {
   char const *cfg;
+  printf("\n\n\n\n\n\n");
+    printf("ARGC:i %d\n", argc);
+  for(int i=0;i<argc;++i) {
+    printf("ARG %d: %s", i, argv[i]);
+    printf("\n");
+  }
+  printf("\n\n\n\n\n\n");
 
   config = cmd_ln_parse_r(NULL, cont_args_def, argc, argv, TRUE);
 
@@ -247,4 +254,3 @@ int main(int argc, char *argv[])
 
   return 0;
 }
-
