@@ -210,9 +210,24 @@ static void recognize_from_microphone()
   ad_close(ad);
 }
 
-int main(int argc, char *argv[])
+//int main(int argc, char *argv[])
+int main()
 {
   char const *cfg;
+
+  // Printing all flags of the code.
+  int argc=9;
+  char *argv[9];
+
+  argv[0] = "./testing_mic";
+  argv[1] = "-inmic";
+  argv[2] = "yes";
+  argv[3] = "-dict";
+  argv[4]  = "model/cmudict-en-us.dict";
+  argv[5] = "-jsgf";
+  argv[6] = "grammar/chess_grammar.jsgf";
+  argv[7] = "-hmm";
+  argv[8] = "model/cmusphinx-en-us-8khz-5.2";
   printf("\n\n\n\n\n\n");
     printf("ARGC:i %d\n", argc);
   for(int i=0;i<argc;++i) {
