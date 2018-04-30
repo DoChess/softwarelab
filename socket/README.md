@@ -17,3 +17,5 @@ And start to chat.
 ## Description
 
 The objective is to send a **pair** of data in the comunication chanel.
+
+[reference](https://myembeddeddiary.wordpress.com/2016/05/13/unix-socket-server-and-client-full-duplex-communication-example/)

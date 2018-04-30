@@ -23,14 +23,18 @@ void my_isr(int n)
 				kill(getpid(),9);///Kill this process now…
 }
 
+void send_message(char *message) {
+				//Sending buffer for "sever to client"
+				char send_buff[300];
+				memset(send_buff,0,300);
+				gets(send_buff);
+				write(fd,message,300);
+}
+
 void server()
 {
 
 				int portNumber = 8080;
-
-				//Sending buffer for "sever to client"
-				char send_buff[300];
-				memset(send_buff,0,300);
 
 				//receving buffer for "Client to server"
 				char rec_buff[300];
@@ -83,8 +87,7 @@ void server()
 				{
 								while(1)
 								{
-												gets(send_buff);
-												write(fd,send_buff,300);
+									send_message("biscoito");
 								}
 				}
 				else//PARENT process…………..
