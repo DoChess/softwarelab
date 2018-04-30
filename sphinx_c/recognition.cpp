@@ -181,22 +181,28 @@ static void recognize_from_microphone()
   utt_started = FALSE;
   E_INFO("Ready....\n");
 
+  // This loop will be removed.
   for (;;) {
     if ((k = ad_read(ad, adbuf, 2048)) < 0)
       E_FATAL("Failed to read audio\n");
     ps_process_raw(ps, adbuf, k, FALSE, FALSE);
     in_speech = ps_get_in_speech(ps);
 
+    // If have someone talking and not statarted to hear. So start to listening.
     if (in_speech && !utt_started) {
       utt_started = TRUE;
       E_INFO("Listening...\n");
     }
+    
     if (!in_speech && utt_started) {
       /* speech -> silence transition, time to start new utterance  */
       ps_end_utt(ps);
       hyp = ps_get_hyp(ps, NULL );
       if (hyp != NULL) {
+        // Print the value recognized.
+        printf("\n\n\n\n\n");
         printf("%s\n", hyp);
+        printf("\n\n\n\n\n");
         fflush(stdout);
       }
 
