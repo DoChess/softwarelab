@@ -20,7 +20,7 @@ void my_isr(int n)
 				kill(getpid(),9);
 }
 
-main(int argc , char * argv[])
+void client()
 {
 				int portNumber = 8080;
 
@@ -34,7 +34,7 @@ main(int argc , char * argv[])
 
 				////////////
 				struct hostent *hPtr;
-				char *remoteHost= "localhost";//Get IP address of the server from the command line arguments …
+				char *remoteHost= "localhost";
 				if((hPtr = gethostbyname(remoteHost)) == NULL)
 
 				{

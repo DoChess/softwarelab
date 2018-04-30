@@ -1,6 +1,6 @@
 #include <stdio.h>
-#include<string.h>
-#include<signal.h>
+#include <string.h>
+#include <signal.h>
 #include <sys/types.h>   // Types used in sys/socket.h and netinet/in.h
 #include <netinet/in.h>  // Internet domain address structures and functions
 #include <sys/socket.h>  // Structures and functions used for socket API
@@ -23,7 +23,7 @@ void my_isr(int n)
 				kill(getpid(),9);///Kill this process now…
 }
 
-main()
+void server()
 {
 
 				int portNumber = 8080;
@@ -95,7 +95,4 @@ main()
 																puts(rec_buff);
 								}
 				}
-
 }
-
-
