@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include<string.h>
-#include<signal.h>
-#include <sys/types.h>   // Types used in sys/socket.h and netinet/in.h
-#include <netinet/in.h>  // Internet domain address structures and functions
-#include <sys/socket.h>  // Structures and functions used for socket API
-#include <netdb.h>       // Used for domain/DNS hostname lookup
-#include <unistd.h>
-#include <stdlib.h>
+#include "message.c"
 
 //Declaring SD global for use in isr_routine..
 int SD;
@@ -75,16 +67,14 @@ void client()
 				{
 								while(1)
 								{
-												if(read(SD,rec_buff,300)!=0)
-																puts(rec_buff);
+									receive_message(SD);
 								}
 				}
 				else//PARENT process…………….
 				{
 								while(1)
 								{
-												gets(send_buff);
-												write(SD,send_buff,300);
+									send_message(SD, "bolacha");
 								}
 				}
 }

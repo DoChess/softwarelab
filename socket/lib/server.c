@@ -1,13 +1,4 @@
-#include <stdio.h>
-#include <string.h>
-#include <signal.h>
-#include <sys/types.h>   // Types used in sys/socket.h and netinet/in.h
-#include <netinet/in.h>  // Internet domain address structures and functions
-#include <sys/socket.h>  // Structures and functions used for socket API
-#include <netdb.h>       // Used for domain/DNS hostname lookup
-#include <unistd.h>
-#include <stdlib.h>
-#include <errno.h>
+#include "message.c"
 
 //Declaring Socket as Global for Signalling in my_
 int SD;
@@ -23,22 +14,10 @@ void my_isr(int n)
 				kill(getpid(),9);///Kill this process now…
 }
 
-void send_message(char *message) {
-				//Sending buffer for "sever to client"
-				char send_buff[300];
-				memset(send_buff,0,300);
-				gets(send_buff);
-				write(fd,message,300);
-}
-
 void server()
 {
 
 				int portNumber = 8080;
-
-				//receving buffer for "Client to server"
-				char rec_buff[300];
-				memset(rec_buff,0,300);
 
 				//FIll the  family and address..so that we can bind this details with the socket to be created..
 				struct sockaddr_in addr;
@@ -87,15 +66,14 @@ void server()
 				{
 								while(1)
 								{
-									send_message("biscoito");
+									send_message(fd, "biscoito");
 								}
 				}
 				else//PARENT process…………..
 				{
 								while(1)
 								{
-												if(read(fd,rec_buff,300)!=0)
-																puts(rec_buff);
+									receive_message(fd);
 								}
 				}
 }

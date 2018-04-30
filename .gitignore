@@ -1,4 +1,4 @@
 testing_mic
 *.swp
-prog1
-prog2
+client
+server
