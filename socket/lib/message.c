@@ -11,17 +11,17 @@
 
 void send_message(int global, char *message) {
         //Sending buffer for "sever to client"
-				char send_buff[300];
-				memset(send_buff,0,300);
-				gets(send_buff);
+				char buff[300];
+				memset(buff,0,300);
+				gets(buff);
         write(global,message,300);
 }
 
 void receive_message(int global) {
         //receving buffer for "Client to server"
-        char rec_buff[300];
-        memset(rec_buff,0,300);
+        char buff[300];
+        memset(buff,0,300);
 
-        if(read(global,rec_buff,300)!=0)
-                puts(rec_buff);
+        if(read(global,buff,300)!=0)
+                puts(buff);
 }
