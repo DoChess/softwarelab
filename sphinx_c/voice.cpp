@@ -1,5 +1,15 @@
 #include "recognition.cpp"
 
+void print_args(int argc, char **argv) {
+  printf("\n\n\n\n\n\n");
+  printf("ARGC:i %d\n", argc);
+  for(int i=0;i<argc;++i) {
+    printf("ARG %d: %s", i, argv[i]);
+    printf("\n");
+  }
+  printf("\n\n\n\n\n\n");
+}
+
 //int main(int argc, char *argv[])
 int main()
 {
@@ -18,13 +28,7 @@ int main()
   argv[7] = "-hmm";
   argv[8] = "model/cmusphinx-en-us-8khz-5.2";
 
-  printf("\n\n\n\n\n\n");
-  printf("ARGC:i %d\n", argc);
-  for(int i=0;i<argc;++i) {
-    printf("ARG %d: %s", i, argv[i]);
-    printf("\n");
-  }
-  printf("\n\n\n\n\n\n");
+  print_args(argc, argv);
 
   config = cmd_ln_parse_r(NULL, cont_args_def, argc, argv, TRUE);
 

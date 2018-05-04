@@ -51,15 +51,11 @@
  *   - Uses audio library; can be replaced with an equivalent custom library.
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <assert.h>
+#include <cstdio>
+#include <cstring>
+#include <cassert>
 
-#if defined(_WIN32) && !defined(__CYGWIN__)
-#include <windows.h>
-#else
 #include <sys/select.h>
-#endif
 
 #include <sphinxbase/err.h>
 #include <sphinxbase/ad.h>
@@ -137,21 +133,16 @@ static int check_wav_header(char *header, int expected_sr)
   return 1;
 }
 
-/* Sleep for specified msec */
 static void sleep_msec(int32 ms)
 {
-#if (defined(_WIN32) && !defined(GNUWINCE)) || defined(_WIN32_WCE)
-  Sleep(ms);
-#else
   /* ------------------- Unix ------------------ */
-  struct timeval tmo;
-
-  tmo.tv_sec = 0;
-  tmo.tv_usec = ms * 1000;
-
-  select(0, NULL, NULL, NULL, &tmo);
-#endif
-}
+   struct timeval tmo;
+ 
+   tmo.tv_sec = 0;
+   tmo.tv_usec = ms * 1000;
+ 
+   select(0, NULL, NULL, NULL, &tmo);
+ }
 
 /*
  * Main utterance processing loop:
