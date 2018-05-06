@@ -1,55 +1,4 @@
-/* -*- c-basic-offset: 4; indent-tabs-mode: nil -*- */
-/* ====================================================================
- * Copyright (c) 1999-2010 Carnegie Mellon University.  All rights
- * reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer. 
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in
- *    the documentation and/or other materials provided with the
- *    distribution.
- *
- * This work was supported in part by funding from the Defense Advanced 
- * Research Projects Agency and the National Science Foundation of the 
- * United States of America, and the CMU Sphinx Speech Consortium.
- *
- * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
- * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
- * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
- * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
- * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
- * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
- * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
- * ====================================================================
- *
- */
-/*
- * continuous.c - Simple pocketsphinx command-line application to test
- *                both continuous listening/silence filtering from microphone
- *                and continuous file transcription.
- */
-
-/*
- * This is a simple example of pocketsphinx application that uses continuous listening
- * with silence filtering to automatically segment a continuous stream of audio input
- * into utterances that are then decoded.
- * 
- * Remarks:
- *   - Each utterance is ended when a silence segment of at least 1 sec is recognized.
- *   - Single-threaded implementation for portability.
- *   - Uses audio library; can be replaced with an equivalent custom library.
- */
+#include <string>
 
 #include <cstdio>
 #include <cstring>
@@ -61,6 +10,8 @@
 #include <sphinxbase/ad.h>
 
 #include "pocketsphinx.h"
+
+using namespace std;
 
 static const arg_t cont_args_def[] = {
 				POCKETSPHINX_OPTIONS,
@@ -79,7 +30,7 @@ static const arg_t cont_args_def[] = {
 								"Audio file to transcribe."},
 				{"-inmic",
 								ARG_BOOLEAN,
-								"no",
+								"yes",
 								"Transcribe audio from microphone."},
 				{"-time",
 								ARG_BOOLEAN,
@@ -152,7 +103,7 @@ static void sleep_msec(int32 ms)
  *        print utterance result;
  *     }
  */
-static void recognize_from_microphone()
+static void recognize_from_microphone(bool hear_flag, string desired_command)
 {
 				ad_rec_t *ad;
 				int16 adbuf[2048];
@@ -173,45 +124,104 @@ static void recognize_from_microphone()
 				E_INFO("Ready....\n");
 
 				while(true){
-								if ((k = ad_read(ad, adbuf, 2048)) < 0){
-												E_FATAL("Failed to read audio\n");
-								}
-								ps_process_raw(ps, adbuf, k, FALSE, FALSE);
-								in_speech = ps_get_in_speech(ps);
+								// Control listening.
+								if(hear_flag == true) {
 
-								// If have someone talking and not statarted to hear. So start 
-								// listening.
-								if (in_speech && !utt_started) {
-												utt_started = TRUE;
-												E_INFO("Listening...\n");
-								}
-
-								// If no one is talking and is hearing. So stop it, and print the 
-								// result.
-								if (!in_speech && utt_started) {
-												/* speech -> silence transition, time to start new utterance  */
-												ps_end_utt(ps);
-												hyp = ps_get_hyp(ps, NULL );
-												// If uderstand somethig. So print it.
-												if (hyp != NULL) {
-																// Print the value recognized.
-																printf("\n\n\n\n\n");
-																printf("%s\n", hyp);
-																if(!strcmp(hyp, "chess")){ 
+									if ((k = ad_read(ad, adbuf, 2048)) < 0){
+													E_FATAL("Failed to read audio\n");
+									}
+									ps_process_raw(ps, adbuf, k, FALSE, FALSE);
+									in_speech = ps_get_in_speech(ps);
+	
+									// If have someone talking and not statarted to hear. So start 
+									// listening.
+									if (in_speech && !utt_started) {
+													utt_started = TRUE;
+													E_INFO("Listening...\n");
+									}
+	
+									// If no one is talking and is hearing. So stop it, and print the 
+									// result.
+									if (!in_speech && utt_started) {
+													/* speech -> silence transition, time to start new utterance  */
+													ps_end_utt(ps);
+													hyp = ps_get_hyp(ps, NULL );
+													// If uderstand somethig. So print it.
+													if (hyp != NULL) {
+																	// Print the value recognized.
 																	printf("\n\n\n\n\n");
-																	printf("Stop listening\n");
-																	exit(1);
-																}
-																printf("\n\n\n\n\n");
-																fflush(stdout);
-												}
-
-												if (ps_start_utt(ps) < 0)
-																E_FATAL("Failed to start utterance\n");
-												utt_started = FALSE;
-												E_INFO("Ready....\n");
+																	printf("%s\n", hyp);
+																	if(!strcmp(hyp, desired_command.c_str())){ 
+																		printf("\n\n\n\n\n");
+																		printf("Stop listening\n");
+																		exit(1);
+																	}
+																	printf("\n\n\n\n\n");
+																	fflush(stdout);
+													}
+	
+													if (ps_start_utt(ps) < 0)
+																	E_FATAL("Failed to start utterance\n");
+													utt_started = FALSE;
+													E_INFO("Ready....\n");
+									}
+								} else {
+									//do nothing
 								}
 								sleep_msec(100);
 				}
 				ad_close(ad);
 }
+
+/* -*- c-basic-offset: 4; indent-tabs-mode: nil -*- */
+/* ====================================================================
+ * Copyright (c) 1999-2010 Carnegie Mellon University.  All rights
+ * reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer. 
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in
+ *    the documentation and/or other materials provided with the
+ *    distribution.
+ *
+ * This work was supported in part by funding from the Defense Advanced 
+ * Research Projects Agency and the National Science Foundation of the 
+ * United States of America, and the CMU Sphinx Speech Consortium.
+ *
+ * THIS SOFTWARE IS PROVIDED BY CARNEGIE MELLON UNIVERSITY ``AS IS'' AND 
+ * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL CARNEGIE MELLON UNIVERSITY
+ * NOR ITS EMPLOYEES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+ * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, 
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY 
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * ====================================================================
+ *
+ */
+/*
+ * continuous.c - Simple pocketsphinx command-line application to test
+ *                both continuous listening/silence filtering from microphone
+ *                and continuous file transcription.
+ */
+
+/*
+ * This is a simple example of pocketsphinx application that uses continuous listening
+ * with silence filtering to automatically segment a continuous stream of audio input
+ * into utterances that are then decoded.
+ * 
+ * Remarks:
+ *   - Each utterance is ended when a silence segment of at least 1 sec is recognized.
+ *   - Single-threaded implementation for portability.
+ *   - Uses audio library; can be replaced with an equivalent custom library.
+ */
