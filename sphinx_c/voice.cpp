@@ -3,11 +3,9 @@
 using namespace std;
 
 //int main(int argc, char *argv[])
-int voice()
+int voice(bool hear_flag, string desired_command)
 {
 				char const *cfg;
-				// If true the code start listening.
-				bool hear_flag = false;
 
 				int argc=3;
 				char *argv[3];
@@ -42,8 +40,6 @@ int voice()
 				if (cmd_ln_str_r(config, "-infile") != NULL) {
 								// nothing
 				} else if (cmd_ln_boolean_r(config, "-inmic")) {
-								hear_flag = true;
-								string desired_command = "chess";
 								recognize_from_microphone(hear_flag, desired_command);
 				}
 
