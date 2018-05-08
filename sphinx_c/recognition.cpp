@@ -103,7 +103,7 @@ static void sleep_msec(int32 ms)
  *        print utterance result;
  *     }
  */
-static void recognize_from_microphone(bool hear_flag, string desired_command)
+static void recognize_from_microphone(string desired_command)
 {
 				ad_rec_t *ad;
 				int16 adbuf[2048];
@@ -123,10 +123,8 @@ static void recognize_from_microphone(bool hear_flag, string desired_command)
 				utt_started = FALSE;
 				E_INFO("Ready....\n");
 
+				// Control listening.
 				while(true){
-								// Control listening.
-								if(hear_flag == true) {
-
 									if ((k = ad_read(ad, adbuf, 2048)) < 0){
 													E_FATAL("Failed to read audio\n");
 									}
@@ -165,9 +163,6 @@ static void recognize_from_microphone(bool hear_flag, string desired_command)
 													utt_started = FALSE;
 													E_INFO("Ready....\n");
 									}
-								} else {
-									//do nothing
-								}
 								sleep_msec(100);
 				}
 				ad_close(ad);

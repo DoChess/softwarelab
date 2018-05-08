@@ -11,7 +11,7 @@ int main() {
 	string desired_command;
 
 	desired_command = "chess";
-	hear_flag = true;
+	hear_flag = false;
 	/*
 		The real objective is use the voice like:
 		voice();

@@ -5,6 +5,7 @@ using namespace std;
 //int main(int argc, char *argv[])
 int voice(bool hear_flag, string desired_command)
 {
+	if(hear_flag) {
 				char const *cfg;
 
 				int argc=3;
@@ -40,11 +41,12 @@ int voice(bool hear_flag, string desired_command)
 				if (cmd_ln_str_r(config, "-infile") != NULL) {
 								// nothing
 				} else if (cmd_ln_boolean_r(config, "-inmic")) {
-								recognize_from_microphone(hear_flag, desired_command);
+								recognize_from_microphone(desired_command);
 				}
 
 				ps_free(ps);
 				cmd_ln_free_r(config);
 
 				return 0;
+	}
 }
