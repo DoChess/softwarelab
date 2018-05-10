@@ -21,4 +21,7 @@ cd pocketsphinx-5prealpha/
 make
 make install
 
+echo "Updating environment variables"
+source ~/.bashrc
+
 echo "DONE."
