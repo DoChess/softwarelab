@@ -151,11 +151,11 @@ static void recognize_from_microphone(bool hear_flag, string desired_command)
 																	// Print the value recognized.
 																	printf("\n\n\n\n\n");
 																	printf("%s\n", hyp);
-																	if(!strcmp(hyp, desired_command.c_str())){ 
-																		printf("\n\n\n\n\n");
-																		printf("Stop listening\n");
-																		exit(1);
-																	}
+																	//if(!strcmp(hyp, desired_command.c_str())){ 
+																	//	printf("\n\n\n\n\n");
+																	//	printf("Stop listening\n");
+																	//	exit(1);
+																	//}
 																	printf("\n\n\n\n\n");
 																	fflush(stdout);
 													}
